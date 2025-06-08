@@ -17,7 +17,7 @@ const stats = [
   {
     icon: "assets/accurate.png",
     label: "AI Accuracy",
-    value: 95.6,
+    value: 97.7,
     suffix: "%",
     description: "Powered by deep learning to spot subtle patterns.",
   },
@@ -88,11 +88,11 @@ const StatsSection: React.FC = () => {
               flex: 1,
               boxShadow:
                 theme.palette.mode === "dark"
-                  ? `0 0 30px ${theme.palette.primary.light}40` 
-                  : `0 0 30px ${theme.palette.primary.light}40`, 
+                  ? `0 0 30px ${theme.palette.primary.light}40`
+                  : `0 0 30px ${theme.palette.primary.light}40`,
               transition: "transform 0.3s ease",
             }}
-            whileHover={{ 
+            whileHover={{
               scale: 1.05,
               boxShadow:
                 theme.palette.mode === "dark"
@@ -140,10 +140,11 @@ const StatsSection: React.FC = () => {
 
               <Typography
                 variant="h3"
-                sx={{ 
-                  color: theme.palette.mode === "dark" 
-                    ? theme.palette.primary.light 
-                    : theme.palette.primary.dark 
+                sx={{
+                  color:
+                    theme.palette.mode === "dark"
+                      ? theme.palette.primary.light
+                      : theme.palette.primary.dark,
                 }}
               >
                 <CountUp
