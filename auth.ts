@@ -54,5 +54,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.accessToken = token.accessToken as string;
       return session;
     },
+    // Add this redirect callback
+    async redirect({ url, baseUrl }) {
+      // If the URL starts with the base URL, allow it
+      if (url.startsWith(baseUrl)) return url;
+      // If it's a relative URL, prepend the base URL
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Otherwise, return to the home page
+      return `${baseUrl}/home`;
+    },
   },
 });
