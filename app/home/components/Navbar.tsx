@@ -16,8 +16,20 @@ const Navbar = ({ showThemeToggle = false }: NavbarProps) => {
   const { data: session } = useSession();
 
   const handleLogout = async () => {
-    await signOut({ redirect: false });
-    router.push("/");
+    try {
+      // Clear any local storage items if you're using them
+      localStorage.clear();
+      
+      // Use signOut with redirect: true to ensure complete session cleanup
+      await signOut({ 
+        redirect: true,
+        callbackUrl: "/"
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Fallback if the above fails
+      router.push("/");
+    }
   };
 
   return (

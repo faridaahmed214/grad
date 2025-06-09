@@ -9,11 +9,22 @@ import {
 } from "@mui/material";
 import Navbar from "./components/Navbar";
 import styles from "./styles/HomePage.module.css";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
   const [text, setText] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   useEffect(() => {
     const savedText = localStorage.getItem('savedAnalysisText');
@@ -35,6 +46,15 @@ const HomePage = () => {
       setLoading(false);
     }, 2000);
   };
+
+  // Show loading or redirect if not authenticated
+  if (status === "loading" || status === "unauthenticated") {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box className={styles.homepageContainer}>

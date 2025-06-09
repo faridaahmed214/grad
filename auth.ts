@@ -14,8 +14,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials) throw new Error("No credentials provided");
 
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://deploygrad.runasp.net";
+
         try {
-          const res = await axios.post("http://deploygrad.runasp.net/api/Accounts/login", {
+          const res = await axios.post(`${apiUrl}/api/Accounts/login`, {
             email: credentials.email,
             password: credentials.password,
           });
@@ -42,6 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }) {

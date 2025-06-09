@@ -20,7 +20,7 @@ export default function RootLayout({
         </style>
       </head>
       <body>
-        <SessionProvider>
+        <SessionProvider refetchInterval={5 * 60} refetchOnWindowFocus={true}>
           <ThemeProvider>
             <ThemeRegistry>{children}</ThemeRegistry>
           </ThemeProvider>
