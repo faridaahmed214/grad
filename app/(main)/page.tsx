@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import StatsSection from "@/app/(main)/components/StatsSection";
 
 // Lazy loaded components

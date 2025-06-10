@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, IconButton, Box } from "@mui/material";
-import { AccountCircle, ExitToApp } from "@mui/icons-material";
+import { ExitToApp } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import ThemeToggleButton from "../../../components/ThemeToggleButton";
 import { signOut, useSession } from "next-auth/react";
@@ -17,17 +17,18 @@ const Navbar = ({ showThemeToggle = false }: NavbarProps) => {
 
   const handleLogout = async () => {
     try {
-      // Clear any local storage items if you're using them
-      localStorage.clear();
-      
-      // Use signOut with redirect: true to ensure complete session cleanup
+      const itemsToKeep = ['theme-mode']; 
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && !itemsToKeep.includes(key)) {
+        }
+      }
       await signOut({ 
         redirect: true,
         callbackUrl: "/"
       });
     } catch (error) {
       console.error("Logout error:", error);
-      // Fallback if the above fails
       router.push("/");
     }
   };
@@ -89,7 +90,6 @@ const Navbar = ({ showThemeToggle = false }: NavbarProps) => {
           sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}
         >
           <IconButton sx={{ color: theme.palette.text.primary }}>
-            <AccountCircle />
           </IconButton>
           <IconButton
             onClick={handleLogout}

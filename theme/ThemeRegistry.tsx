@@ -26,7 +26,7 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
 
   // If the theme is still loading, show Lottie animation
   if (loading) {
-    return <LottieLoading minDuration={2000} />;
+    return <LottieLoading />;
   }
 
   return (
