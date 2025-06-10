@@ -18,7 +18,6 @@ export default auth((req: NextRequest) => {
   // Redirect unauthorized users trying to access private routes
   if (!isLoggedIn && isHomePage) {
     const url = new URL("/", origin);
-    url.searchParams.set("showLogin", "true");
     return NextResponse.redirect(url);
   }
 

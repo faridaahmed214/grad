@@ -26,7 +26,7 @@ export const submitButtonStyle = (theme: Theme) => ({
   borderRadius: "8px",
   backgroundColor: theme.palette.primary.main,
   "&:hover": {
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.dark,
     boxShadow: `0 0 15px ${theme.palette.primary.main}`,
   },
   "&:active": {

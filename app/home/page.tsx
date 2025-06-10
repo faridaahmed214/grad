@@ -11,6 +11,7 @@ import Navbar from "./components/Navbar";
 import styles from "./styles/HomePage.module.css";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import LottieLoading from "@/components/LottieLoading";
 
 const HomePage = () => {
   const [text, setText] = useState("");
@@ -49,11 +50,7 @@ const HomePage = () => {
 
   // Show loading or redirect if not authenticated
   if (status === "loading" || status === "unauthenticated") {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LottieLoading minDuration={2000} />;
   }
 
   return (

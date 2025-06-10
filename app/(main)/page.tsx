@@ -27,6 +27,8 @@ const ForgetPassword = React.lazy(
 
 import "./styles/landing.css";
 
+import LottieLoading from "@/components/LottieLoading";
+
 const features = [
   {
     icon: "/assets/now.png",
@@ -47,7 +49,6 @@ const features = [
 
 const LandingPage = () => {
   const theme = useTheme();
-  const router = useRouter();
 
 
   // States
@@ -288,7 +289,7 @@ const LandingPage = () => {
       </footer>
 
       {/* Lazy Modal */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LottieLoading minDuration={2000} />}>
         <Modal
           open={openModal}
           onClose={() => setOpenModal(false)}

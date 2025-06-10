@@ -6,6 +6,7 @@ import { useThemeContext } from "../context/ThemeContext";
 import { lightTheme, darkTheme } from "@/theme";
 import { usePathname } from "next/navigation";
 import ThemeToggleButton from "@/components/ThemeToggleButton";
+import LottieLoading from "@/components/LottieLoading";
 
 export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const { mode } = useThemeContext();
@@ -15,12 +16,17 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
   const isLandingPage = pathname === "/";
 
   useEffect(() => {
-    setLoading(false);
+    // Set minimum loading time of 3 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, [mode]);
 
-  // If the theme is still loading, show a placeholder (or loading spinner)
+  // If the theme is still loading, show Lottie animation
   if (loading) {
-    return <div>Loading...</div>;
+    return <LottieLoading minDuration={2000} />;
   }
 
   return (

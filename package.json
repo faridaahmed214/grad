@@ -24,6 +24,7 @@
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
+    "react-lottie-player": "^2.1.0",
     "react-toastify": "^11.0.5",
     "styled-components": "^6.1.17",
     "yup": "^1.6.1"
