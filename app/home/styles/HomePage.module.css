@@ -1,4 +1,4 @@
-/* Fade-in animation */
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -8,7 +8,6 @@
   }
 }
 
-/* Slide-up animation */
 @keyframes slideUp {
   from {
     transform: translateY(30px);
@@ -20,7 +19,6 @@
   }
 }
 
-/* Pulse animation for the button */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -30,7 +28,6 @@
   }
 }
 
-/* Animation classes */
 .fadeIn {
   animation: fadeIn 1s ease-in-out;
 }
@@ -43,7 +40,7 @@
   animation: pulse 1s infinite alternate;
 }
 
-/* Homepage container */
+/* Layout */
 .homepageContainer {
   min-height: 100vh;
   display: flex;
@@ -51,55 +48,58 @@
   background-color: var(--background-color);
   color: var(--text-color);
   overflow: hidden;
+  padding: 1rem;
 }
 
-/* Content Flex Container */
 .contentFlex {
-  flex-grow: 1;
-  padding: 2rem;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  height: calc(100vh - 64px); /* Adjust for navbar height */
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+  padding: 2rem 1rem;
+  align-items: stretch;
+  flex: 1;
 }
 
-/* Columns */
 .inputColumn,
 .resultsColumn {
-  flex: 1; /* Each column takes equal width */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Vertically center content */
-  align-items: center;
-  padding: 2rem;
-  height: 100%;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
-  margin: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeIn 1s ease-in;
 }
 
-/* Heading styling */
 .heading {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   font-family: "Roboto", sans-serif;
   font-weight: bold;
   color: var(--primary-color);
-  animation: slideUp 1.5s ease-out;
   text-align: center;
+  font-size: 2rem;
+  letter-spacing: 1px; /* Example */
+  line-height: 1.4;    /* Example */
 }
 
-/* Text field styling */
 .textField {
   width: 100%;
   margin-bottom: 1.5rem !important;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.2);
   transition: transform 0.2s ease-in-out;
+}
+
+.textField:hover {
+  transform: scale(1.01);
 }
 
 .textField .MuiOutlinedInput-root {
@@ -114,8 +114,8 @@
   border-color: var(--primary-color) !important;
 }
 
-/* Result box */
-.resultBox {
+.resultBox,
+.placeholderBox {
   padding: 2rem;
   border-radius: 15px;
   background: rgba(255, 255, 255, 0.1);
@@ -124,15 +124,25 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.17);
   width: 100%;
-  height: 100%; /* Take full height of column */
+  flex: 2; /* Example: Make input column wider */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 1s ease-out;
+  text-align: center;
 }
 
-/* Centered loader */
+.resultsColumn {
+  flex: 1; /* Example: Make results column narrower */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid var(--mui-palette-divider); /* Example using a theme variable */
+  box-shadow: none; /* Optionally remove existing shadow */
+}
+
 .centeredLoader {
   display: flex;
   flex-direction: column;
@@ -143,51 +153,36 @@
   min-height: 200px;
 }
 
-/* Placeholder box */
 .placeholderBox {
-  padding: 2rem;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  height: 100%; /* Take full height of column */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   opacity: 0.7;
 }
 
 /* Responsive adjustments */
 @media (max-width: 900px) {
   .contentFlex {
-    flex-direction: column; /* Stack columns vertically */
+    grid-template-columns: 1fr;
     padding: 1rem;
-    height: auto; /* Allow height to adjust */
-  }
-  .inputColumn,
-  .resultsColumn {
-    flex: none; /* Remove flex grow */
-    width: 100%; /* Full width */
-    justify-content: flex-start;
-    padding: 1rem 0.5rem;
-    margin: 0.5rem 0;
   }
   .heading {
-    font-size: 1.75rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
   }
 }
 
 @media (max-width: 600px) {
   .heading {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   .resultBox,
   .placeholderBox {
     padding: 1.5rem;
   }
+  .textField {
+    margin-bottom: 1rem !important;
+  }
+}
+
+.inputColumn:hover {
+  transform: translateY(-5px); /* Example hover effect */
+  transition: transform 0.3s ease-out;
 }

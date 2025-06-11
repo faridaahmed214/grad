@@ -1,24 +1,15 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import Lottie from "react-lottie-player";
 import loadingAnimation from "../public/assets/loading.json";
 
-interface LottieLoadingProps {
-  minDuration?: number; // Minimum duration in milliseconds
-}
 
-const LottieLoading: React.FC<LottieLoadingProps> = ({ minDuration = 2000 }) => {
+
+const LottieLoading = () => {
   const theme = useTheme();
   const [showLoading, setShowLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoading(false);
-    }, minDuration);
 
-    return () => clearTimeout(timer);
-  }, [minDuration]);
 
   if (!showLoading) {
     return null;

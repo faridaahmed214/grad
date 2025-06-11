@@ -288,7 +288,7 @@ const LandingPage = () => {
       </footer>
 
       {/* Lazy Modal */}
-      <Suspense fallback={<LottieLoading minDuration={2000} />}>
+      <Suspense fallback={<LottieLoading />}>
         <Modal
           open={openModal}
           onClose={() => setOpenModal(false)}

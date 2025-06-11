@@ -41,7 +41,7 @@ interface SignupFormValues {
 }
 
 interface SignupFormProps {
-  onLoginClick?: () => void; // Add this prop for opening login modal
+  onLoginClick?: () => void; 
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({ onLoginClick }) => {

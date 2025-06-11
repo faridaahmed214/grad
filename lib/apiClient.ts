@@ -6,17 +6,19 @@ interface ApiClientOptions {
   params?: Record<string, any>;
   method?: "GET" | "POST" | "PUT" | "DELETE";
   data?: any;
+  timeout?: number;
 }
 
 async function apiClient<T>(
   endpoint: string,
-  { params = {}, method = "GET", data = null }: ApiClientOptions
+  { params = {}, method = "GET", data = null ,timeout = 30000}: ApiClientOptions
 ): Promise<T | Error> {
   const session = await getSession();
 
   const requestConfig: AxiosRequestConfig = {
     method,
     url: endpoint,
+    timeout,
     params: { ...axiosInstance.defaults.params, ...params },
     headers: {
       ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),

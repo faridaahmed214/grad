@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LottieLoading from "@/components/LottieLoading";
 import PercentageWheel from "./components/PercentageWheel";
+import { predictText } from "@/lib/bertApi";
 
 const HomePage = () => {
   const [text, setText] = useState("");
@@ -23,6 +24,7 @@ const HomePage = () => {
     text: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { data: session, status } = useSession();
   const router = useRouter();
   const theme = useTheme();
@@ -41,31 +43,53 @@ const HomePage = () => {
     }
   }, []);
 
-  const handleCheckText = () => {
+  const handleCheckText = async () => {
     if (!text.trim()) return;
+    
     setLoading(true);
     setAnalysisResult(null);
-    setTimeout(() => {
-      const aiScore = Math.random();
-      const aiPercentage = Math.round(aiScore * 100);
-      const humanPercentage = 100 - aiPercentage;
-
-      let resultText = "";
-      if (aiPercentage > 70) {
-        resultText = "This text is highly likely AI-generated.";
-      } else if (aiPercentage > 40) {
-        resultText = "This text shows characteristics of AI generation.";
-      } else {
-        resultText = "This text appears to be Human-written.";
+    setError(null);
+    
+    try {
+      const result = await predictText(text.trim());
+      
+      if (result instanceof Error) {
+        setError(result.message);
+        setLoading(false);
+        return;
       }
-
+      
+      // Convert confidence to percentage (multiply by 100)
+      const confidencePercentage = Math.round(result.confidence * 100);
+      
+      // Determine AI vs Human percentages based on prediction
+      let aiPercentage: number;
+      let humanPercentage: number;
+      let resultText: string;
+      
+      if (result.prediction.toLowerCase().includes('ai') || result.prediction.toLowerCase().includes('generated')) {
+        // If prediction is AI-generated, confidence represents AI percentage
+        aiPercentage = confidencePercentage;
+        humanPercentage = 100 - confidencePercentage;
+        resultText = `This text is ${confidencePercentage}% likely to be AI-generated.`;
+      } else {
+        // If prediction is Human-written, confidence represents Human percentage
+        humanPercentage = confidencePercentage;
+        aiPercentage = 100 - confidencePercentage;
+        resultText = `This text is ${confidencePercentage}% likely to be Human-written.`;
+      }
+      
       setAnalysisResult({
         aiPercentage,
         humanPercentage,
         text: resultText,
       });
+    } catch (err) {
+      setError('Failed to analyze text. Please try again.');
+      console.error('Prediction error:', err);
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -87,6 +111,8 @@ const HomePage = () => {
               onChange={(e) => setText(e.target.value)}
               className={styles.textField}
               fullWidth
+              error={!!error}
+              helperText={error}
             />
             <Button
               variant="contained"
@@ -104,7 +130,7 @@ const HomePage = () => {
                 "&:active": {
                   boxShadow: `0 0 20px ${theme.palette.primary.light}`,
                 },
-                mt: 4, // Maintain larger gap below text field
+                mt: 4,
                 width: '100%',
               }}
             >
@@ -130,10 +156,20 @@ const HomePage = () => {
               />
             </Box>
           )}
-          {!loading && !analysisResult && (
+          {!loading && !analysisResult && !error && (
             <Box className={styles.placeholderBox}>
               <Typography variant="h6" color="textSecondary">
                 Your analysis results will appear here.
+              </Typography>
+            </Box>
+          )}
+          {!loading && error && (
+            <Box className={styles.placeholderBox}>
+              <Typography variant="h6" color="error">
+                {error}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                Please check your connection and try again.
               </Typography>
             </Box>
           )}
