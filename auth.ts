@@ -1,4 +1,4 @@
-// app/auth.ts or wherever your auth config is
+// app/auth.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
@@ -14,16 +14,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials) throw new Error("No credentials provided");
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://deploygrad.runasp.net";
+        const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://deploygrad.runasp.net";
 
         try {
           const res = await axios.post(`${apiUrl}/api/Accounts/login`, {
-            email: credentials.email,
+            email: credentials.email, 
             password: credentials.password,
           });
 
           const user = res.data;
-
+          console.log(res.data)
           if (user && user.token) {
             return {
               id: user.email,
@@ -33,10 +33,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             };
           }
 
-          throw new Error("Invalid credentials");
+          return null;
         } catch (error: any) {
+          console.error("Login error:", error?.response?.data || error.message);
           const errorMessage = error?.response?.data?.message || error.message || "Login failed";
-          throw new Error(errorMessage);
+          throw new Error(JSON.stringify({ message: errorMessage }));
         }
       },
     }),
@@ -57,13 +58,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.accessToken = token.accessToken as string;
       return session;
     },
-    // Add this redirect callback
     async redirect({ url, baseUrl }) {
-      // If the URL starts with the base URL, allow it
       if (url.startsWith(baseUrl)) return url;
-      // If it's a relative URL, prepend the base URL
       if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Otherwise, return to the home page
       return `${baseUrl}/home`;
     },
   },
