@@ -59,21 +59,17 @@ const HomePage = () => {
         return;
       }
       
-      // Convert confidence to percentage (multiply by 100)
       const confidencePercentage = Math.round(result.confidence * 100);
       
-      // Determine AI vs Human percentages based on prediction
       let aiPercentage: number;
       let humanPercentage: number;
       let resultText: string;
       
       if (result.prediction.toLowerCase().includes('ai') || result.prediction.toLowerCase().includes('generated')) {
-        // If prediction is AI-generated, confidence represents AI percentage
         aiPercentage = confidencePercentage;
         humanPercentage = 100 - confidencePercentage;
         resultText = `This text is ${confidencePercentage}% likely to be AI-generated.`;
       } else {
-        // If prediction is Human-written, confidence represents Human percentage
         humanPercentage = confidencePercentage;
         aiPercentage = 100 - confidencePercentage;
         resultText = `This text is ${confidencePercentage}% likely to be Human-written.`;
